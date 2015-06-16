@@ -36,27 +36,189 @@
 }
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<h3>
+<a id="void-freel-lint" class="anchor" href="#void-freel-lint" aria-hidden="true"><span class="octicon octicon-link"></span></a>void freeL (LInt)</h3>
+
+<pre><code>void freeL (LInt z){
+    if (z==NULL)
+        return;
+    LInt aux = z;
+    while (z!=NULL){
+        z=z-&gt;prox;
+        free(aux);
+        aux = z;
+    }
+}
+</code></pre>
 
 <h3>
-<a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<a id="void-imprime-lint" class="anchor" href="#void-imprime-lint" aria-hidden="true"><span class="octicon octicon-link"></span></a>void imprime (LInt)</h3>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a id="rather-drive-stick" class="anchor" href="#rather-drive-stick" aria-hidden="true"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<pre><code>void imprime (LInt z){
+    if (z==NULL)
+        return;
+    while (z!=NULL){
+        printf("%d\n", z-&gt;valor);
+        z=z-&gt;prox;
+    }
+}
+</code></pre>
 
 <h3>
-<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<a id="lint-reverse-lint" class="anchor" href="#lint-reverse-lint" aria-hidden="true"><span class="octicon octicon-link"></span></a>LInt reverse (LInt)</h3>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="https://help.github.com/pages">https://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<pre><code>LInt reverse (LInt z){
+    if (z==NULL || z-&gt;prox==NULL)
+        return z;
+    LInt top = z;
+    while (z-&gt;prox!=NULL){
+        z=z-&gt;prox;
+    }
+    LInt bottom = z;
+    LInt low = bottom;
+    z=top;
+    while (low!=top){
+        while (z-&gt;prox!=low){
+        z=z-&gt;prox;
+    }
+    low-&gt;prox = z;
+    low=low-&gt;prox;
+    z=top;
+    }
+    top-&gt;prox = NULL;
+
+    return bottom;
+}
+</code></pre>
+
+<h3>
+<a id="void-insert-lint--int" class="anchor" href="#void-insert-lint--int" aria-hidden="true"><span class="octicon octicon-link"></span></a>void insert (LInt *, int)</h3>
+
+<pre><code>void insert (LInt *z, int x){
+    LInt newBox = newLInt(x,NULL);
+    LInt zz = *z;
+    if (zz == NULL){
+        zz = newBox;
+        *z = zz;
+        return;
+    }
+    else if (zz-&gt;valor &gt; x){
+        newBox-&gt;prox = zz;
+        zz = newBox;
+        *z = zz;
+        return;
+    }
+    while (zz-&gt;prox!=NULL &amp;&amp; (zz-&gt;prox-&gt;valor)&lt;x){
+        zz= zz-&gt;prox;
+    }
+    newBox-&gt;prox = zz-&gt;prox;
+    zz-&gt; prox = newBox;
+}
+</code></pre>
+
+<h3>
+<a id="int-remove-lint--int" class="anchor" href="#int-remove-lint--int" aria-hidden="true"><span class="octicon octicon-link"></span></a>int remove (LInt *, int)</h3>
+
+<pre><code>int removez (LInt *z, int x){
+    LInt zz = *z;
+    LInt aux = zz;
+    LInt ante = zz;
+    if (zz==NULL || zz-&gt;valor &gt; x)
+        return 1;
+
+    else if (zz-&gt;valor == x){
+        zz = zz-&gt;prox;
+        free(aux);
+        *z = zz;
+        return 0;
+    }
+    zz= zz-&gt;prox;
+    while (zz &amp;&amp; zz-&gt;valor &lt; x){
+        zz= zz-&gt;prox;
+        ante = ante-&gt;prox;
+    }
+    if (zz!=NULL &amp;&amp; zz-&gt;valor == x){
+        if (zz-&gt;prox != NULL){
+            ante-&gt;prox = zz-&gt;prox;
+            free(zz);
+            return 0;
+        }
+        else{
+            free(zz);
+            ante-&gt;prox = NULL;
+            return 0;
+    }
+    }
+    return 1;
+}
+</code></pre>
+
+<h3>
+<a id="lint-merge-lint-lint" class="anchor" href="#lint-merge-lint-lint" aria-hidden="true"><span class="octicon octicon-link"></span></a>LInt merge (LInt, LInt)</h3>
+
+<pre><code>LInt merge(LInt a, LInt b){
+    if (a==NULL)
+        return b;
+    if (b==NULL)
+        return a;
+    LInt head;
+    if (a-&gt;valor &lt; b-&gt;valor){
+        head = a;
+        a = a-&gt;prox;
+    }
+    else{
+        head = b;
+        b = b-&gt;prox;
+    }
+    LInt fixed_head = head;
+    while (a!=NULL &amp;&amp; b!=NULL){
+        if (a-&gt;valor &lt; b-&gt;valor){
+            head-&gt;prox = a;
+            head = head-&gt;prox;
+            a = a-&gt;prox;
+        }
+        else if (a-&gt;valor &gt; b-&gt;valor){
+            head-&gt;prox = b;
+            head = head-&gt;prox;
+            b = b-&gt;prox;
+        }
+    }
+    if (a == NULL)
+        head-&gt;prox = b;
+    else if (b==NULL)
+        head-&gt;prox = a;
+    return fixed_head;
+}
+</code></pre>
+
+<h3>
+<a id="void-split-lint-l-int-lint--lint-" class="anchor" href="#void-split-lint-l-int-lint--lint-" aria-hidden="true"><span class="octicon octicon-link"></span></a>void split (LInt l, int, LInt *, LInt *)</h3>
+
+<pre><code>void split (LInt l, int x, LInt *mx, LInt *Mx){
+    if (l==NULL)
+        return;
+    LInt mmx = newLInt(666, NULL);
+    LInt MMx = newLInt(666, NULL);
+    LInt tmmx = mmx;
+    LInt tMMx = MMx;
+    while (l){
+        if (l-&gt;valor &gt;= x){
+            tMMx-&gt;prox = l;
+            tMMx = tMMx-&gt;prox;
+        }
+        if (l-&gt;valor &lt;= x){
+            tmmx-&gt;prox = l;
+            tmmx = tmmx-&gt;prox;
+        }
+        l = l-&gt; prox;
+    }
+    tMMx-&gt;prox = NULL;
+    tmmx-&gt;prox = NULL;
+
+    *mx = mmx-&gt;prox;
+    *Mx = MMx-&gt;prox;
+}
+</code></pre>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/FrVentura/inc">Teste</a> is maintained by <a href="https://github.com/FrVentura">FrVentura</a>.</span>
