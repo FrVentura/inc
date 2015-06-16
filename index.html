@@ -624,6 +624,126 @@ return head_of_res;
 }
 </code></pre>
 
+<h3>
+<a id="int-height-abin" class="anchor" href="#int-height-abin" aria-hidden="true"><span class="octicon octicon-link"></span></a>int height (ABin)</h3>
+
+<pre><code>int max (int a, int b){
+    if (a&gt;b)
+        return a;   
+    return b;
+}
+
+
+int height (ABin a){
+    int count = 0;
+    if (a)
+        count = (1+max(height(a-&gt;esq),height(a-&gt;dir)));
+    return count;
+}
+</code></pre>
+
+<h3>
+<a id="abin-cloneab-abin" class="anchor" href="#abin-cloneab-abin" aria-hidden="true"><span class="octicon octicon-link"></span></a>ABin cloneAB (ABin)</h3>
+
+<pre><code>ABin cloneAB (ABin a){
+    if (a==NULL)
+        return NULL;
+    return newABin(a-&gt;valor,cloneAB(a-&gt;esq),cloneAB(a-&gt;dir));
+
+}
+</code></pre>
+
+<h3>
+<a id="void-mirror-abin-" class="anchor" href="#void-mirror-abin-" aria-hidden="true"><span class="octicon octicon-link"></span></a>void mirror (ABin *)</h3>
+
+<pre><code>void mirror (ABin *a){
+    ABin aa = *a;
+    if (aa==NULL)
+        return;
+    mirror(&amp;(aa-&gt;esq));
+    mirror(&amp;(aa-&gt;dir));
+    ABin temp = aa-&gt;esq;
+    aa-&gt;esq = aa-&gt;dir;
+    aa-&gt;dir = temp;
+}
+</code></pre>
+
+<h3>
+<a id="void-inorder-abin-lint-" class="anchor" href="#void-inorder-abin-lint-" aria-hidden="true"><span class="octicon octicon-link"></span></a>void inorder (ABin, LInt *)</h3>
+
+<pre><code>void inorder (ABin a, LInt *l){
+    if (a==NULL)
+        return;
+    inorder(a-&gt;dir,l);
+    *l= newLInt(a-&gt;valor,*l);
+    inorder(a-&gt;esq,l);
+}
+</code></pre>
+
+<h3>
+<a id="void-preorder-abin-lint-" class="anchor" href="#void-preorder-abin-lint-" aria-hidden="true"><span class="octicon octicon-link"></span></a>void preorder (ABin, LInt *)</h3>
+
+<pre><code>void preorder (ABin a, LInt *l){
+    if (a==NULL)
+        return;
+    *l = newLInt(a-&gt;valor,*l);
+    preorder(a-&gt;dir, l);
+    preorder(a-&gt;esq, l);
+}
+</code></pre>
+
+<h3>
+<a id="void-posorder-abin-lint-" class="anchor" href="#void-posorder-abin-lint-" aria-hidden="true"><span class="octicon octicon-link"></span></a>void posorder (ABin, LInt *)</h3>
+
+<pre><code>void posorder (ABin a, LInt *l){
+    if (a==NULL)
+        return;
+    posorder(a-&gt;esq,l);
+    *l = newLInt(a-&gt;valor, *l);
+    posorder(a-&gt;dir,l); 
+}
+</code></pre>
+
+<h3>
+<a id="int-depth-abin-int" class="anchor" href="#int-depth-abin-int" aria-hidden="true"><span class="octicon octicon-link"></span></a>int depth (ABin, int)</h3>
+
+<pre><code>int depth (ABin a, int x){
+    int level = 1;
+    int tester = 0;
+    if (a==NULL)
+        return -1;
+    if (x &gt; a-&gt;valor){
+        tester = depth(a-&gt;dir,x);
+        if (tester &gt; -1)
+            level = 1 + depth(a-&gt;dir, x);
+        else
+            level =-1;
+    }
+    else if (x &lt; a-&gt;valor){
+        tester = depth(a-&gt;esq,x);
+        if (tester &gt; -1)
+            level = 1 + depth(a-&gt;esq, x);
+        else
+            level =-1;
+    }
+    return level;
+}
+</code></pre>
+
+<h3>
+<a id="int-freeab-abin" class="anchor" href="#int-freeab-abin" aria-hidden="true"><span class="octicon octicon-link"></span></a>int freeAB (ABin)</h3>
+
+<pre><code>int freeAB (ABin a){
+    int count = 0;
+    if (a==NULL)
+        return count;
+    count = 1 + freeAB(a-&gt;esq) + freeAB(a-&gt;dir);
+    //a-&gt;esq = a-&gt;dir = NULL;
+    free(a);
+    return count;
+}
+</code></pre>
+
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/FrVentura/inc">Teste</a> is maintained by <a href="https://github.com/FrVentura">FrVentura</a>.</span>
 
