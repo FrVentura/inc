@@ -744,6 +744,261 @@ int height (ABin a){
 }
 </code></pre>
 
+<h3>
+<a id="int-pruneab-abin--int" class="anchor" href="#int-pruneab-abin--int" aria-hidden="true"><span class="octicon octicon-link"></span></a>int pruneAB (ABin *, int)</h3>
+
+<pre><code>int pruneAB (ABin *a, int l){
+    int level = l;
+    if (level==0){
+        return freeAB(*a);
+        (*a)-&gt;esq = NULL;
+        (*a)-&gt;dir = NULL;
+    }
+    level --;
+
+    if ((*a)-&gt;esq &amp;&amp; (*a)-&gt;dir)
+        return  (pruneAB(&amp;((*a)-&gt;esq), level ) + pruneAB(&amp;((*a)-&gt;dir), level ));
+    else if (!(*a)-&gt;esq &amp;&amp; (*a)-&gt;dir)
+        return pruneAB(&amp;((*a)-&gt;dir), level);
+    else if ((*a)-&gt;esq &amp;&amp; !(*a)-&gt;dir)
+        return pruneAB(&amp;((*a)-&gt;esq), level);
+
+    //if (!(*a)-&gt;esq &amp;&amp; !(*a)-&gt;dir)
+    return 0;
+}
+</code></pre>
+
+<h3>
+<a id="int-iguais-abin-abin" class="anchor" href="#int-iguais-abin-abin" aria-hidden="true"><span class="octicon octicon-link"></span></a>int iguais (ABin, ABin)</h3>
+
+<pre><code>int min(int a, int b){
+    if (a&lt;b)
+        return a;
+    return b;
+}
+
+int iguais (ABin a, ABin b){
+    if ((!a &amp;&amp; b) || (a &amp;&amp; !b) )
+        return 0;
+    else if (a &amp;&amp; b &amp;&amp; a-&gt;valor != b-&gt;valor)
+        return 0;
+    int r = 1;
+    if (a &amp;&amp; b)
+        r = min(iguais(a-&gt;esq,b-&gt;esq), iguais(a-&gt;dir,b-&gt;dir));
+    return r;
+}
+</code></pre>
+
+<h3>
+<a id="lint-nivel-abin-int" class="anchor" href="#lint-nivel-abin-int" aria-hidden="true"><span class="octicon octicon-link"></span></a>LInt nivel (ABin, int)</h3>
+
+<pre><code>LInt nivel (ABin a, int n){
+    LInt l;
+    if (!a)
+        return NULL;
+    if (n==1){
+        l = newLInt(a-&gt;valor, NULL);
+        return l;
+    }
+    LInt head;
+    l = nivel(a-&gt;esq, n-1);
+    if (l){
+        head = l;
+        while (l-&gt;prox)
+            l = l-&gt;prox;
+        l-&gt;prox = nivel(a-&gt;dir, n-1);
+    }
+    else {
+        l = nivel(a-&gt;dir, n-1);
+        head = l;
+    }
+    return head;
+}
+</code></pre>
+
+<h3>
+<a id="nivelarray-abin-int-int-v" class="anchor" href="#nivelarray-abin-int-int-v" aria-hidden="true"><span class="octicon octicon-link"></span></a>nivelArray (ABin, int, int v[])</h3>
+
+<pre><code>int nivelArray (ABin a, int n, int v[]){
+    int* temp = v;
+    if (a==NULL)
+        return 0;
+    if (n==1){
+        v[0] = a-&gt;valor;
+        return 1;
+    }
+    else{
+        n--;
+        v+=nivelArray(a-&gt;esq,n,v);
+        v+=nivelArray(a-&gt;dir,n,v);
+    }
+    return v - temp;
+}
+</code></pre>
+
+<h3>
+<a id="int-dumpabin-abin-int-v-int" class="anchor" href="#int-dumpabin-abin-int-v-int" aria-hidden="true"><span class="octicon octicon-link"></span></a>int dumpABin (ABin, int v[], int)</h3>
+
+<pre><code>int dumpAbin (ABin a, int v[], int N){
+    int temp1, temp2;
+    if (a==NULL|| N&lt;0)
+        return 0;
+
+    temp1=dumpAbin(a-&gt;esq, v, N);
+    N-=temp1;
+    v+=temp1;
+    *v = (a-&gt;valor);
+    N--;
+    temp2=dumpAbin(a-&gt;dir,v+1,N);
+
+    return temp2+temp1+1;
+}
+</code></pre>
+
+<h3>
+<a id="abin-somasab-abin" class="anchor" href="#abin-somasab-abin" aria-hidden="true"><span class="octicon octicon-link"></span></a>ABin somasAB (ABin)</h3>
+
+<pre><code>ABin somasAB (ABin a){
+    if (a==NULL)
+        return NULL;
+    ABin r = newABin(a-&gt;valor,NULL,NULL);
+
+    int z = a-&gt;valor;
+
+    if (a-&gt;esq &amp;&amp; a-&gt;dir)
+        z= somasAB(a-&gt;esq)-&gt;valor + somasAB(a-&gt;dir)-&gt;valor;
+    else if (a-&gt;esq == NULL &amp;&amp; a-&gt;dir)
+        z = somasAB(a-&gt;dir)-&gt;valor;
+    else if (a-&gt;esq &amp;&amp; a-&gt;dir == NULL)
+        z = somasAB(a-&gt;esq)-&gt;valor;
+    else if (a-&gt;esq == NULL &amp;&amp; a-&gt;dir==NULL)
+        z = a-&gt;valor;
+
+    r = newABin(z,somasAB(a-&gt;esq),somasAB(a-&gt;dir));
+
+    return r;
+}
+</code></pre>
+
+<h3>
+<a id="int-contafolhas-abin" class="anchor" href="#int-contafolhas-abin" aria-hidden="true"><span class="octicon octicon-link"></span></a>int contaFolhas (ABin)</h3>
+
+<pre><code>int contaFolhas (ABin a){
+    if (!a)
+        return 0;
+    if (a-&gt;esq == NULL &amp;&amp; a-&gt;dir == NULL)
+        return 1;
+    int r = 0;
+    r += contaFolhas(a-&gt;esq)+contaFolhas(a-&gt;dir);
+    return r;
+}
+</code></pre>
+
+<h3>
+<a id="abin-mirror2abin" class="anchor" href="#abin-mirror2abin" aria-hidden="true"><span class="octicon octicon-link"></span></a>ABin mirror2(ABin)</h3>
+
+<pre><code>ABin mirror2 (ABin a){
+    if (!a)
+        return NULL;
+    ABin r = newABin(a-&gt;valor,mirror2(a-&gt;dir),mirror2(a-&gt;esq));
+
+    return r;
+}
+</code></pre>
+
+<h3>
+<a id="int-add-abin--int" class="anchor" href="#int-add-abin--int" aria-hidden="true"><span class="octicon octicon-link"></span></a>int add (ABin *, int)</h3>
+
+<pre><code>int add (ABin *a, int x){
+    if (!*a){
+        *a = newABin (x,NULL,NULL);
+        return 0;
+    }
+    else if ((*a)-&gt;valor == x){
+        return 1;
+    }
+    else if ((*a)-&gt;valor &lt; x){
+        add (&amp;((*a)-&gt;dir),x);
+    }
+    else if ((*a)-&gt;valor &gt; x){
+        add (&amp;((*a)-&gt;esq),x);
+    }
+    return 1;
+}
+</code></pre>
+
+<h3>
+<a id="int-lookup-abin-int" class="anchor" href="#int-lookup-abin-int" aria-hidden="true"><span class="octicon octicon-link"></span></a>int lookup (ABin, int)</h3>
+
+<pre><code>int lookup (ABin a, int x){
+    if (!a)
+        return 0;
+    else if (a-&gt;valor == x)
+        return 1;
+    int z = 0;
+    z+=lookup(a-&gt;esq,x);
+    z+=lookup(a-&gt;dir,x);
+    return z;
+}
+</code></pre>
+
+<h3>
+<a id="int-maior-abin" class="anchor" href="#int-maior-abin" aria-hidden="true"><span class="octicon octicon-link"></span></a>int maior (ABin)</h3>
+
+<pre><code>int maior (ABin a){
+    while (a-&gt;dir)
+        a = a-&gt;dir;
+    return a-&gt;valor;
+}
+</code></pre>
+
+<h3>
+<a id="void-removemaiorab-abin-" class="anchor" href="#void-removemaiorab-abin-" aria-hidden="true"><span class="octicon octicon-link"></span></a>void removeMaiorAB (ABin *)</h3>
+
+<pre><code>void removeMaiorAB (ABin *a){
+    ABin iter = *a;
+    if (!iter)
+        return;
+    ABin ante = iter;
+    iter = iter-&gt;dir;
+    while (iter-&gt;dir){
+        ante = iter;
+        iter = iter-&gt;dir;
+    }
+    free(iter);
+    ante-&gt;dir = NULL;
+}
+</code></pre>
+
+<h3>
+<a id="int-maiores-abin-int" class="anchor" href="#int-maiores-abin-int" aria-hidden="true"><span class="octicon octicon-link"></span></a>int maiores (ABin, int)</h3>
+
+<pre><code>int maiores (ABin a, int x){
+    if (!a)
+        return 0;
+    if (a-&gt;valor &gt; x)
+        return 1 + maiores(a-&gt;esq, x) + maiores(a-&gt;dir, x);
+    else
+        return maiores(a-&gt;esq, x) + maiores (a-&gt;dir, x);
+}
+</code></pre>
+
+<h3>
+<a id="void-fromlist-lint-abin-" class="anchor" href="#void-fromlist-lint-abin-" aria-hidden="true"><span class="octicon octicon-link"></span></a>void fromList (LInt, ABin *)</h3>
+
+<pre><code>void fromList (LInt l, ABin *a){
+    if (!l)
+        return ;
+    *a = newABin(l-&gt;valor,NULL,NULL);
+    l=l-&gt;prox;
+    int x;
+    while(l){
+        add(a,l-&gt;valor);
+        l=l-&gt;prox;
+    }
+}
+</code></pre>
+
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/FrVentura/inc">Teste</a> is maintained by <a href="https://github.com/FrVentura">FrVentura</a>.</span>
 
