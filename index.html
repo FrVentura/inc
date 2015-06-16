@@ -375,6 +375,255 @@
 }
 </code></pre>
 
+<p>LInt cloneR (LInt a){</p>
+
+<pre><code>LInt last;
+LInt HEAD = a;
+if (a == NULL)
+    return NULL;
+
+while (a-&gt;prox){
+    a = a-&gt;prox;
+}
+
+last = a;
+a = HEAD;
+LInt result = newLInt(last-&gt;valor, NULL);
+LInt head_of_res = result;  
+while (1){
+    while (a-&gt;prox != last){
+        a = a-&gt;prox;
+    }
+    last = a;
+    a = HEAD;
+    result-&gt;prox = newLInt(last-&gt;valor, NULL);
+    result = result-&gt;prox;
+    if (a == last)
+        break;
+}
+return head_of_res;
+</code></pre>
+
+<p>}</p>
+
+<h3>
+<a id="int-maximo-lint" class="anchor" href="#int-maximo-lint" aria-hidden="true"><span class="octicon octicon-link"></span></a>int maximo (LInt)</h3>
+
+<pre><code>int maximo (LInt l){
+    int max = l-&gt;valor;
+    l = l-&gt;prox;
+    while (l){
+        if (l-&gt;valor &gt; max)
+            max = l-&gt;valor;
+        l = l-&gt;prox;
+    }
+    return max;
+}
+</code></pre>
+
+<h3>
+<a id="int-take-int-lint-" class="anchor" href="#int-take-int-lint-" aria-hidden="true"><span class="octicon octicon-link"></span></a>int take (int, LInt *)</h3>
+
+<pre><code>int take (int n, LInt *l){
+    int size = 1;
+    LInt ante;
+    LInt ll = *l;
+    LInt end;
+    while (ll &amp;&amp; size &lt; n){
+        ll = ll-&gt;prox;
+        size ++;
+    }
+
+    if (ll==NULL){
+        size--;
+        return size;
+        }
+
+    end = ll;
+    ll = ll-&gt;prox;
+    end-&gt;prox=NULL;
+    if (ll==NULL)
+        return size;
+
+    ante = ll;
+    ll =ll-&gt;prox;
+    if (ll == NULL){
+        free(ante);
+        return size;
+    }
+    while (ll-&gt;prox) {
+        free(ante);
+        ante = ll;
+        ll = ll-&gt;prox;
+    }
+    //free(ante);
+    return size;
+}
+</code></pre>
+
+<h3>
+<a id="int-drop-int-lint-" class="anchor" href="#int-drop-int-lint-" aria-hidden="true"><span class="octicon octicon-link"></span></a>int drop (int, LInt *)</h3>
+
+<pre><code>int drop (int n, LInt *l){
+    LInt ll = *l;
+    int count = 0;
+    if (ll == NULL || n == 0)
+        return count;
+
+    count++;
+    LInt ante = ll;
+    ll=ll-&gt;prox;
+    while (count!=n &amp;&amp; ll){
+        free (ante);
+        ante = ll;
+        ll = ll-&gt;prox;
+        count++;
+    }
+    *l =ll;
+    return count;
+}
+</code></pre>
+
+<h3>
+<a id="lint-nforward" class="anchor" href="#lint-nforward" aria-hidden="true"><span class="octicon octicon-link"></span></a>LInt Nforward</h3>
+
+<pre><code>LInt Nforward(LInt l, int N){
+    while (N){
+        l=l-&gt;prox;
+        N--;
+    }
+    return l;
+}
+</code></pre>
+
+<h3>
+<a id="int-dumpl-lint-int-v-int" class="anchor" href="#int-dumpl-lint-int-v-int" aria-hidden="true"><span class="octicon octicon-link"></span></a>int dumpL (LInt, int v[], int)</h3>
+
+<pre><code>int dumpL (LInt l, int v[], int N){
+    int count = 0;
+    while(count!=N){
+        v[count] = l-&gt;valor;
+        l= l-&gt;prox;
+        count ++;
+    }
+
+    return count;
+}
+</code></pre>
+
+<h3>
+<a id="lint-somas-lint" class="anchor" href="#lint-somas-lint" aria-hidden="true"><span class="octicon octicon-link"></span></a>LInt somas (Lint)</h3>
+
+<pre><code>LInt somas (LInt l){
+    if (l==NULL)
+        return NULL;
+
+    int somatorio = 0;
+    LInt HEAD=l;
+    while (l){
+        somatorio+=l-&gt;valor;
+        l-&gt;valor = somatorio;
+        l=l-&gt;prox;
+    }
+    return HEAD;
+}
+</code></pre>
+
+<h3>
+<a id="void-remreps-lint" class="anchor" href="#void-remreps-lint" aria-hidden="true"><span class="octicon octicon-link"></span></a>void remreps (LInt)</h3>
+
+<pre><code>void remreps (LInt l){
+    if (l==NULL || l-&gt;prox==NULL)
+        return;
+    LInt head = l;
+    int chosen = head-&gt;valor;
+    l = l-&gt;prox;
+    LInt ante = l;
+    l=l-&gt;prox;
+    while (l){
+        if (l-&gt;valor == chosen &amp;&amp; l-&gt;prox){
+            ante-&gt;prox = l-&gt;prox;
+            free(l);
+            l=ante-&gt;prox;
+        }
+        else if (l-&gt;valor == chosen &amp;&amp; l-&gt;prox==NULL){
+            ante-&gt;prox = NULL;
+            free (l);
+        }
+        ante = ante-&gt;prox;
+        l=l-&gt;prox;
+        head = head-&gt;prox;
+        chosen = head-&gt;valor;
+    }
+}
+</code></pre>
+
+<h3>
+<a id="lint-fromarray-int-v-int" class="anchor" href="#lint-fromarray-int-v-int" aria-hidden="true"><span class="octicon octicon-link"></span></a>LInt fromArray (int v[], int)</h3>
+
+<pre><code>LInt fromArray (int v[], int N){
+    if (N==0)
+        return NULL;
+
+    int i;
+    LInt result = newLInt(v[0],NULL);
+    LInt head_of_res = result;
+
+    for (i=1; i&lt;N; i++){
+        result-&gt;prox = newLInt(v[i],NULL);
+        result = result-&gt;prox;
+    }
+    return head_of_res;
+}
+</code></pre>
+
+<h3>
+<a id="lint-rotatel" class="anchor" href="#lint-rotatel" aria-hidden="true"><span class="octicon octicon-link"></span></a>LInt rotateL</h3>
+
+<pre><code>LInt rotateL (LInt l){
+    if (l==NULL || l-&gt;prox == NULL)
+        return l;
+    LInt head = l;
+    LInt aux = l-&gt;prox;
+
+    while (l-&gt;prox){
+        l=l-&gt;prox;
+    }
+    l-&gt;prox = head;
+    head-&gt;prox = NULL;
+    return aux;
+}
+</code></pre>
+
+<h3>
+<a id="lint-parte-lint" class="anchor" href="#lint-parte-lint" aria-hidden="true"><span class="octicon octicon-link"></span></a>LInt parte (LInt)</h3>
+
+<pre><code>LInt parte (LInt l){
+    if (l == NULL || l-&gt;prox == NULL)
+        return NULL;
+
+    int count = 1;
+    LInt head = l;
+    LInt pares = l-&gt;prox;
+    LInt head_of_pares = pares; 
+    while (pares-&gt;prox){
+        l-&gt;prox = pares-&gt;prox;
+        l = l-&gt;prox;
+        if (l-&gt;prox){
+            pares-&gt;prox = l-&gt;prox;
+            pares = pares-&gt;prox;
+        }
+        else if (l-&gt;prox ==NULL)
+            break;
+    }
+
+    pares-&gt;prox = NULL;
+    l-&gt;prox = NULL;
+
+    return head_of_pares;
+}
+</code></pre>
+
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/FrVentura/inc">Teste</a> is maintained by <a href="https://github.com/FrVentura">FrVentura</a>.</span>
 
