@@ -1,34 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-
+    <meta charset="UTF-8">
     <title>Teste by FrVentura</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
-
   <body>
+    <section class="page-header">
+      <h1 class="project-name">Teste</h1>
+      <h2 class="project-tagline"></h2>
+      <a href="https://github.com/FrVentura/inc" class="btn">View on GitHub</a>
+      <a href="https://github.com/FrVentura/inc/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/FrVentura/inc/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-    <header>
-      <div class="container">
-        <h1>Teste</h1>
-        <h2></h2>
-
-        <section id="downloads">
-          <a href="https://github.com/FrVentura/inc/zipball/master" class="btn">Download as .zip</a>
-          <a href="https://github.com/FrVentura/inc/tarball/master" class="btn">Download as .tar.gz</a>
-          <a href="https://github.com/FrVentura/inc" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
-        </section>
-      </div>
-    </header>
-
-    <div class="container">
-      <section id="main_content">
-        <h1>
+    <section class="main-content">
+      <h1>
 <a id="listas-ligadas" class="anchor" href="#listas-ligadas" aria-hidden="true"><span class="octicon octicon-link"></span></a>Listas Ligadas</h1>
 
 <h3>
@@ -231,9 +222,168 @@
     *Mx = MMx-&gt;prox;
 }
 </code></pre>
-      </section>
-    </div>
 
-    
+<h3>
+<a id="int-remove-lint--int-1" class="anchor" href="#int-remove-lint--int-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>int remove (LInt *, int)</h3>
+
+<pre><code>int remove10 (LInt *l, int x){
+    LInt ll = *l;
+    if (ll==NULL)
+        return 0;
+    int count = 0;
+
+    LInt ante = newLInt(666,ll);
+    LInt head = ante;
+    LInt aux;
+    while (ll){
+        while (ll &amp;&amp; ll-&gt;valor == x){
+            aux = ll;
+            ll = ll-&gt;prox;
+            free(aux);
+            count++;
+        }
+        ante-&gt;prox = ll;
+        ante = ante-&gt;prox;
+        ll = ll-&gt;prox;
+    }
+    ante-&gt;prox = NULL;
+    *l = head-&gt;prox;
+    free(head);
+
+    return count;
+}
+</code></pre>
+
+<h3>
+<a id="int-removedups-lint-" class="anchor" href="#int-removedups-lint-" aria-hidden="true"><span class="octicon octicon-link"></span></a>int removeDups (LInt *)</h3>
+
+<pre><code>int removeDups (LInt *l){
+    LInt ll = *l;
+    int count = 0;
+    if (ll==NULL)
+        return 0;
+
+    LInt aux = newLInt(ll-&gt;valor, NULL);
+    LInt head_of_aux = aux;
+    LInt ante = ll;
+    ll = ll-&gt;prox;
+
+    while (ll){
+        while(aux){
+            if (ll-&gt;valor == aux-&gt;valor){
+                aux = head_of_aux;
+                count ++;
+                break;
+            }
+            aux = aux-&gt;prox;
+        }
+
+        if (aux==NULL){
+            aux = newLInt(ll-&gt;valor,head_of_aux);
+            head_of_aux = aux;
+            ante = ll;
+            ll = ll-&gt;prox;
+        }
+        else{
+        aux = head_of_aux;
+        ante-&gt;prox = ll-&gt;prox;
+        free(ll);
+        ll = ante-&gt;prox;
+        }
+    }
+    return count;
+}
+</code></pre>
+
+<h3>
+<a id="int-removemaior-lint-" class="anchor" href="#int-removemaior-lint-" aria-hidden="true"><span class="octicon octicon-link"></span></a>int removeMaior (LInt *)</h3>
+
+<pre><code>int removeMaior (LInt *l){
+    LInt ll = *l;
+    LInt aux = ll;
+    int biggest = ll-&gt;valor;
+    LInt ante = ll;
+    ll = ll-&gt;prox;
+    while (ll){
+        if (ll-&gt;valor &gt; biggest){
+            biggest = ll-&gt;valor;
+        }
+        ll = ll-&gt;prox;
+    }
+
+    ll = aux -&gt;prox;
+    while (ll){
+        if (ll-&gt;valor == biggest){
+            ante-&gt;prox = ll-&gt;prox;
+            free (ll);
+            break;
+        }
+        else{
+            ante = ll;
+            ll = ll-&gt;prox;
+        }
+    }
+
+    *l = aux;
+    return biggest;
+}
+</code></pre>
+
+<h3>
+<a id="void-init-lint-" class="anchor" href="#void-init-lint-" aria-hidden="true"><span class="octicon octicon-link"></span></a>void init (LInt *)</h3>
+
+<pre><code>void init (LInt *l){
+    LInt ll = *l;
+    LInt ante = ll;
+    LInt head = ll;
+    ll = ll-&gt;prox;
+    while (ll-&gt;prox){
+        ante = ll;
+        ll = ll-&gt;prox;
+    }
+
+    ante-&gt;prox = NULL;
+    free(ll);
+    *l = head;
+}
+</code></pre>
+
+<h3>
+<a id="void-snoc-lint--int" class="anchor" href="#void-snoc-lint--int" aria-hidden="true"><span class="octicon octicon-link"></span></a>void snoc (LInt *, int)</h3>
+
+<pre><code>void snoc (LInt *l, int x){
+    LInt ll = *l;
+    LInt head = ll;
+    while (ll-&gt;prox){
+        ll = ll-&gt;prox;
+    }
+    ll-&gt;prox = newLInt(x,NULL);
+}
+</code></pre>
+
+<h3>
+<a id="void-concat" class="anchor" href="#void-concat" aria-hidden="true"><span class="octicon octicon-link"></span></a>void concat</h3>
+
+<pre><code>void concat (LInt *a, LInt b){
+    LInt aa = *a;
+    LInt head = aa;
+    while (aa-&gt;prox){
+        aa = aa-&gt;prox;
+    }
+    aa-&gt;prox = b;
+    *a = head;
+}
+</code></pre>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/FrVentura/inc">Teste</a> is maintained by <a href="https://github.com/FrVentura">FrVentura</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
   </body>
 </html>
+
