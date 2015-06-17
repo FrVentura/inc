@@ -411,36 +411,38 @@ ABin newABin(int valor, ABin esq, ABin dir){
 }
 </code></pre>
 
-<p>LInt cloneR (LInt a){</p>
+<h3>
+<a id="lint-cloner-lint" class="anchor" href="#lint-cloner-lint" aria-hidden="true"><span class="octicon octicon-link"></span></a>LInt cloneR (LInt)</h3>
 
-<pre><code>LInt last;
-LInt HEAD = a;
-if (a == NULL)
-    return NULL;
+<pre><code>LInt cloneR (LInt a){
 
-while (a-&gt;prox){
-    a = a-&gt;prox;
-}
+    LInt last;
+    LInt HEAD = a;
+    if (a == NULL)
+        return NULL;
 
-last = a;
-a = HEAD;
-LInt result = newLInt(last-&gt;valor, NULL);
-LInt head_of_res = result;  
-while (1){
-    while (a-&gt;prox != last){
+    while (a-&gt;prox){
         a = a-&gt;prox;
     }
+
     last = a;
     a = HEAD;
-    result-&gt;prox = newLInt(last-&gt;valor, NULL);
-    result = result-&gt;prox;
-    if (a == last)
-        break;
+    LInt result = newLInt(last-&gt;valor, NULL);
+    LInt head_of_res = result;  
+    while (1){
+        while (a-&gt;prox != last){
+            a = a-&gt;prox;
+        }
+        last = a;
+        a = HEAD;
+        result-&gt;prox = newLInt(last-&gt;valor, NULL);
+        result = result-&gt;prox;
+        if (a == last)
+            break;
+    }
+    return head_of_res;
 }
-return head_of_res;
 </code></pre>
-
-<p>}</p>
 
 <h3>
 <a id="int-maximo-lint" class="anchor" href="#int-maximo-lint" aria-hidden="true"><span class="octicon octicon-link"></span></a>int maximo (LInt)</h3>
@@ -660,6 +662,9 @@ return head_of_res;
 }
 </code></pre>
 
+<h1>
+<a id="arvores-binarias" class="anchor" href="#arvores-binarias" aria-hidden="true"><span class="octicon octicon-link"></span></a>Arvores Binarias</h1>
+
 <h3>
 <a id="int-height-abin" class="anchor" href="#int-height-abin" aria-hidden="true"><span class="octicon octicon-link"></span></a>int height (ABin)</h3>
 
@@ -677,9 +682,6 @@ int height (ABin a){
     return count;
 }
 </code></pre>
-
-<h1>
-<a id="arvores-binarias" class="anchor" href="#arvores-binarias" aria-hidden="true"><span class="octicon octicon-link"></span></a>Arvores Binarias</h1>
 
 <h3>
 <a id="abin-cloneab-abin" class="anchor" href="#abin-cloneab-abin" aria-hidden="true"><span class="octicon octicon-link"></span></a>ABin cloneAB (ABin)</h3>
